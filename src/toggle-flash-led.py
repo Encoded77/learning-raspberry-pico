@@ -1,9 +1,5 @@
-import micropython
-
 from machine import Pin
 from time import sleep_ms
-
-micropython.alloc_emergency_exception_buf(100)
 
 BUTTON_PIN = Pin(18, mode=Pin.IN, pull=Pin.PULL_UP)
 onboard_led = Pin(25, Pin.OUT)
@@ -25,8 +21,6 @@ should_flash = True
 def interruption_handler(pin: Pin):
   global should_flash
 
-  print('Interrupt')
-
   should_flash = not should_flash
   reset_leds()
 
@@ -40,4 +34,4 @@ while True:
     print('flashing')
     flash_leds()
   else:
-    print('nothing')
+    sleep_ms(100)
