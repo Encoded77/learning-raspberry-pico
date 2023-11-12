@@ -1,8 +1,7 @@
 from machine import Pin
 from time import sleep_ms
 
-BUTTON_PIN = Pin(18, mode=Pin.IN, pull=Pin.PULL_UP)
-onboard_led = Pin(25, Pin.OUT)
+toggle_pin = Pin(18, mode=Pin.IN, pull=Pin.PULL_UP)
 
 leds = [Pin(10, Pin.OUT), Pin(11, Pin.OUT), Pin(12, Pin.OUT)]
 
@@ -24,14 +23,10 @@ def interruption_handler(pin: Pin):
   should_flash = not should_flash
   reset_leds()
 
-def set_irq(pin: Pin):
-  pin.irq(trigger=Pin.IRQ_FALLING, handler=interruption_handler)
-
-set_irq(BUTTON_PIN)
+toggle_pin.irq(trigger=Pin.IRQ_FALLING, handler=interruption_handler)
 
 while True:
   if should_flash:
-    print('flashing')
     flash_leds()
   else:
     sleep_ms(100)
